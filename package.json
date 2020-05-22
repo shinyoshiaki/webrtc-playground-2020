@@ -1,0 +1,10 @@
+{
+  "name": "mini-skyway",
+  "version": "1.0.0",
+  "author": "shinyoshiaki <shinyoshiaki2012@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "server": "cd server && yarn start",
+    "client": "cd client && yarn start"
+  }
+}
