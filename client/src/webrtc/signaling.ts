@@ -2,10 +2,7 @@ import socketClient from "socket.io-client";
 import WebRTC from "webrtc4me";
 import Event from "rx.mini";
 
-const url =
-  process.env.NODE_ENV === "production"
-    ? "https://serene-anchorage-28732.herokuapp.com/"
-    : "localhost:20000";
+const url = "localhost:80";
 
 export const socket = socketClient(url, { transports: ["websocket"] });
 

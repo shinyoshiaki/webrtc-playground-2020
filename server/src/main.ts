@@ -13,7 +13,7 @@ class Server {
   constructor() {
     const srv = new http.Server();
     this.io = socketio(srv);
-    srv.listen(process.env.PORT || 20000);
+    srv.listen(20000);
     this.io.on("connection", (socket) => {
       this.listen(socket);
     });
