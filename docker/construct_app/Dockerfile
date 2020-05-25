@@ -9,10 +9,9 @@ ENV PATH $HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH
 
 RUN mkdir /src
 WORKDIR /src
-COPY . .
+COPY ./server .
 RUN yarn
-RUN cd server && yarn && cd ..
 
 EXPOSE 20000
 
-CMD [ "yarn","server" ]
+CMD [ "yarn","start" ]

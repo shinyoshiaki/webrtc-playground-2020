@@ -7,7 +7,7 @@ services:
     image: nn-web # docker image name
     container_name: nn-web # docker container name
     ports:
-      - 80:80
+      - 23456:23456
 
   app:
     build:
@@ -16,4 +16,4 @@ services:
     image: nn-app # イメージ名
     container_name: nn-app # コンテナ名
     ports: # ポート接続
-      - 20000:20000        
+      - 20000:20000

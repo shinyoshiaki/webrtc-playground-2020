@@ -2,7 +2,7 @@ import socketClient from "socket.io-client";
 import WebRTC from "webrtc4me";
 import Event from "rx.mini";
 
-const url = "localhost:80";
+const url = "localhost:23456";
 
 export const socket = socketClient(url, { transports: ["websocket"] });
 
