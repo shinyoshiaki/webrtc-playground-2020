@@ -17,3 +17,4 @@ services:
     container_name: nn-app # コンテナ名
     ports: # ポート接続
       - 20000:20000
+      - 10000-10100:10000-10100

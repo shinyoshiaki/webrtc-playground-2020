@@ -39,17 +39,20 @@ export class Client {
   publish = (stream: MediaStream) =>
     new Promise<void>(async (r) => {
       console.log("publish");
-      const data: any = await socketPromise(this.socket)("createTransport", {
-        forceTcp: false,
-        rtpCapabilities: this.device.rtpCapabilities,
-      });
-      if (data.error) {
-        console.error(data.error);
+      const transportInfo: any = await socketPromise(this.socket)(
+        "createTransport",
+        {
+          forceTcp: false,
+          rtpCapabilities: this.device.rtpCapabilities,
+        }
+      );
+      if (transportInfo.error) {
+        console.error(transportInfo.error);
         return;
       }
-      console.log({ data });
-
-      const transport = this.device.createSendTransport(data);
+      console.log({ transportInfo });
+      transportInfo.iceServers = [{ urls: "stun:stun.l.google.com:19302" }];
+      const transport = this.device.createSendTransport(transportInfo);
       transport.on("connect", async ({ dtlsParameters }, callback, errback) => {
         console.log("connect");
         socketPromise(this.socket)("connectProducerTransport", {
