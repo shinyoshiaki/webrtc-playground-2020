@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "author": "shinyoshiaki <shinyoshiaki2012@gmail.com>",
   "license": "MIT",
-  "scripts": {
-    "setup": "cd client && yarn && cd .. && cd server && yarn && cd..",
+  "scripts": {    
     "server": "cd server && yarn start",
     "client": "cd client && yarn start",
+    "client:setup": "cd client && yarn && cd ..",
     "client:build": "cd client && yarn build && mv build/* .."
   }
 }

@@ -30,7 +30,7 @@ jobs:
             ${{ runner.os }}-
       - name: prepare
         run: |
-          yarn setup
+          yarn client:setup
       - name: build
         run: |
           yarn client:build
