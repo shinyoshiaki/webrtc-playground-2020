@@ -2,7 +2,7 @@ version: "3"
 services:
   web:
     build:
-      context: ./docker/construct_web # Dockerfile保存場所
+      context: ./docker/nginx # Dockerfile保存場所
       dockerfile: Dockerfile # Dockerfileファイル名
     image: nn-web # docker image name
     container_name: nn-web # docker container name
@@ -12,9 +12,10 @@ services:
   app:
     build:
       context: ./
-      dockerfile: ./docker/construct_app/Dockerfile # Dockerfileファイル名
+      dockerfile: ./docker/app/Dockerfile # Dockerfileファイル名
     image: nn-app # イメージ名
     container_name: nn-app # コンテナ名
     ports: # ポート接続
       - 20000:20000
-      - 10000-10100:10000-10100
+      - 10000-10100:10000-10100/tcp
+      - 10000-10100:10000-10100/udp

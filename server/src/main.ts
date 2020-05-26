@@ -2,6 +2,8 @@ import socketio from "socket.io";
 import http from "http";
 import { Room } from "./room";
 
+console.log("start");
+
 export type RoomObj = {
   roomId: string;
 };

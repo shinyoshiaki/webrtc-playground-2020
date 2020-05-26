@@ -12,6 +12,4 @@ WORKDIR /src
 COPY ./server .
 RUN yarn
 
-EXPOSE 20000
-
 CMD [ "yarn","start" ]
