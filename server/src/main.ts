@@ -1,8 +1,17 @@
 import socketio from "socket.io";
 import http from "http";
 import { Room } from "./room";
+import express from "express";
+import path from "path";
+
+const app = express();
 
 console.log("start");
+
+app.get("/", (req, res) => {
+  console.log("/");
+  res.sendfile(path.join("./index.html"));
+});
 
 export type RoomObj = {
   roomId: string;
