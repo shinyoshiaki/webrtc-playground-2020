@@ -1,5 +1,5 @@
 import { Socket } from "socket.io";
-import { SFU } from "./sfu";
+// import { SFU } from "./sfu";
 import { Subject } from "rxjs";
 
 export class Room {
@@ -11,22 +11,22 @@ export class Room {
     return Object.values(this.guests);
   }
 
-  sfu = new SFU();
+  // sfu = new SFU();
   onDestroy = new Subject();
 
   constructor(private roomId: string) {}
 
   async init() {
-    await this.sfu.runMediasoupWorker();
-    this.sfu.onProduce.subscribe((id) => {
-      console.log("produce", id);
-      this.guestsSockets
-        .filter((socket) => socket.id != id)
-        .forEach((socket) => {
-          console.log("emit produce", socket.id);
-          socket.emit("produce", socket.id);
-        });
-    });
+    // await this.sfu.runMediasoupWorker();
+    // this.sfu.onProduce.subscribe((id) => {
+    //   console.log("produce", id);
+    //   this.guestsSockets
+    //     .filter((socket) => socket.id != id)
+    //     .forEach((socket) => {
+    //       console.log("emit produce", socket.id);
+    //       socket.emit("produce", socket.id);
+    //     });
+    // });
   }
 
   addGuest(guestSocket: Socket) {
@@ -49,6 +49,6 @@ export class Room {
 
     guestSocket.on("", () => {});
 
-    this.sfu.listen(guestSocket);
+    // this.sfu.listen(guestSocket);
   }
 }

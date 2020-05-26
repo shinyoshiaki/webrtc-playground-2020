@@ -18,5 +18,5 @@
     "noImplicitAny": true
   },
   "exclude": ["examples"],
-  "include": ["src"]
+  "include": ["src", "main.ts"]
 }

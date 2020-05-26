@@ -1,18 +1,14 @@
 version: "3"
 services:
-  web:
-    build: ./docker/nginx/
-    image: nn-web
-    container_name: nn-web
-    ports:
-      - 5080:80
-      - 5043:443
-    links:
-      - app:app
-
-  app:
+  nodejs_server:
     build:
       context: ./
       dockerfile: ./docker/app/Dockerfile
-    image: nn-app
-    container_name: nn-app
+
+  nginx:
+    build: ./docker/nginx/
+    ports:
+      - 5580:80
+      - 5443:443
+    links:
+      - nodejs_server:nodejs_server

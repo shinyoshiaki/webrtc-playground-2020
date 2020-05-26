@@ -1,17 +1,13 @@
 import socketio from "socket.io";
 import http from "http";
-import { Room } from "./room";
+import { Room } from "./src/room";
 import express from "express";
-import path from "path";
 
 const app = express();
 
 console.log("start");
 
-app.get("/", (req, res) => {
-  console.log("/");
-  res.sendfile(path.join("./index.html"));
-});
+app.use(express.static("build"));
 
 export type RoomObj = {
   roomId: string;
@@ -22,7 +18,7 @@ class Server {
   io: socketio.Server;
 
   constructor() {
-    const srv = new http.Server();
+    const srv = new http.Server(app);
     this.io = socketio(srv);
     srv.listen(20000);
     this.io.on("connection", (socket) => {
