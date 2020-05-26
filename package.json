@@ -4,6 +4,7 @@
   "author": "shinyoshiaki <shinyoshiaki2012@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "setup": "cd client && yarn && cd .. && cd server && yarn && cd..",
     "server": "cd server && yarn start",
     "client": "cd client && yarn start",
     "client:build": "cd client && yarn build && mv build/* .."

@@ -30,9 +30,9 @@ jobs:
             ${{ runner.os }}-
       - name: prepare
         run: |
-          yarn          
+          yarn setup
       - name: build
-        run: |          
+        run: |
           yarn client:build
       - name: Commit files
         run: |
@@ -40,11 +40,11 @@ jobs:
           git config --local user.name "GitHub Action"
           git add --all
           git commit -m "Add changes"
-      - name: serve stable        
+      - name: serve stable
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: "master"
-          force: true      
+          force: true
     env:
       CI: true
