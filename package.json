@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "server": "cd server && yarn start",
-    "client": "cd client && yarn start"
+    "client": "cd client && yarn start",
+    "client:build": "cd client && yarn build && mv build/ .."
   }
 }
