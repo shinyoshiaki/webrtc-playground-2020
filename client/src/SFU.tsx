@@ -1,10 +1,10 @@
 import React, { FC, useRef, useState } from "react";
 import { Client } from "./webrtc/client";
-import { socket } from "./webrtc/signaling";
 import { getLocalVideo } from "webrtc4me";
 import Videos from "./components/videos";
 import Event from "rx.mini";
 import { socketPromise } from "./webrtc/socket.io-promise";
+import { signaling } from "./webrtc/signaling";
 
 const SFU: FC = () => {
   const [roomId, setRoomId] = useState("");
@@ -16,6 +16,7 @@ const SFU: FC = () => {
     <div>
       <div>
         <input
+          placeholder="roomId"
           onChange={(e) => {
             setRoomId(e.target.value);
           }}
@@ -23,15 +24,19 @@ const SFU: FC = () => {
         <button
           onClick={async () => {
             setRoomLabel("join room:" + roomId);
-            socket.emit("join", { roomId });
-            const { create } = await new Promise((r) => socket.on("join", r));
-            clientRef.current = new Client(socket);
+            signaling.socket.emit("join", { roomId });
+            const { create } = await new Promise((r) =>
+              signaling.socket.on("join", r)
+            );
+            clientRef.current = new Client(signaling.socket);
             clientRef.current.onSubscribe.subscribe((stream) => {
               mediaEvent.current.stream.execute([stream]);
             });
             if (!create) {
               console.log("join");
-              const targets = await socketPromise(socket)("transportList");
+              const targets = await socketPromise(signaling.socket)(
+                "transportList"
+              );
               let streams = [];
               for (let target of targets) {
                 const stream = await clientRef.current.subscribe(target);

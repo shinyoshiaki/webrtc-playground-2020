@@ -1,5 +1,5 @@
 import React, { useState, useRef, FC } from "react";
-import { join, listenPeer } from "./webrtc/signaling";
+import { defaultAddress, signaling, createSocket } from "./webrtc/signaling";
 import WebRTC, { getLocalVideo } from "webrtc4me";
 import Event from "rx.mini";
 import Videos from "./components/videos";
@@ -12,12 +12,18 @@ const App: FC = () => {
   const [rtcList, setRTCList] = useState<{ [id: string]: WebRTC }>({});
   const mediaEvent = useRef({ stream: new Event<MediaStream[]>() });
   const localStreamRef = useRef<MediaStream>(null);
+  const [address, setAddress] = useState(defaultAddress);
+
+  const setSocket = () => {
+    const socket = createSocket(address);
+    signaling.socket = socket;
+  };
 
   const joinRoom = async () => {
     setRoomLabel("join room:" + roomId);
     localStreamRef.current = await getLocalVideo({ width: 320, height: 180 });
     mediaEvent.current.stream.execute([localStreamRef.current]);
-    const peers = await join(roomId, true, true);
+    const peers = await signaling.join(roomId, true, true);
     if (peers) {
       setRTCList(
         peers.reduce((acc, cur) => {
@@ -33,7 +39,7 @@ const App: FC = () => {
       mediaEvent.current.stream.execute(streams);
     }
 
-    listenPeer(true, true).subscribe(async (peer) => {
+    signaling.listenPeer(true, true).subscribe(async (peer) => {
       const stream = await setupStream(peer);
       mediaEvent.current.stream.execute([stream]);
     });
@@ -57,6 +63,11 @@ const App: FC = () => {
 
   return (
     <div>
+      <p>server address</p>
+      <div>
+        <input value={address} onChange={(v) => setAddress(v.target.value)} />
+        <button onClick={setSocket}>set address</button>
+      </div>
       <p>sfu</p>
       <SFU />
       <p>mesh</p>
