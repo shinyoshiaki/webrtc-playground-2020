@@ -3,8 +3,15 @@ import WebRTC from "webrtc4me";
 import Event from "rx.mini";
 
 export class Signaling {
+  peers: WebRTC[] = [];
+  onAddPeers = new Event<WebRTC[]>();
   socket = socketClient(this.url, { transports: ["websocket"] });
   constructor(private url: string) {}
+
+  addPeers(peers: WebRTC[]) {
+    this.peers = [...this.peers, ...peers];
+    this.onAddPeers.execute(peers);
+  }
 
   listenPeer(trickle: boolean, stun: boolean) {
     const event = new Event<WebRTC>();

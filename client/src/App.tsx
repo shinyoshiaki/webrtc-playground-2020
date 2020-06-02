@@ -4,12 +4,12 @@ import WebRTC, { getLocalVideo } from "webrtc4me";
 import Event from "rx.mini";
 import Videos from "./components/videos";
 import useInput from "./hooks/useInput";
+import TextShare from "./components/textshare";
 
 const App: FC = () => {
   const [roomId, setRoomId, clear] = useInput();
   const [url, setUrl] = useInput(location.host);
   const [roomLabel, setRoomLabel] = useState("");
-  const [rtcList, setRTCList] = useState<{ [id: string]: WebRTC }>({});
   const mediaEvent = useRef({ stream: new Event<MediaStream[]>() });
   const localStreamRef = useRef<MediaStream>(null);
   const signalingRef = useRef<Signaling>();
@@ -22,12 +22,8 @@ const App: FC = () => {
     mediaEvent.current.stream.execute([localStreamRef.current]);
     const peers = await signalingRef.current.join(roomId, true, true);
     if (peers) {
-      setRTCList(
-        peers.reduce((acc, cur) => {
-          acc[cur.nodeId] = cur;
-          return acc;
-        }, {})
-      );
+      signalingRef.current.addPeers(peers);
+
       const streams = await Promise.all(
         peers.map(async (peer) => {
           return await setupStream(peer);
@@ -39,6 +35,7 @@ const App: FC = () => {
     signalingRef.current.listenPeer(true, true).subscribe(async (peer) => {
       const stream = await setupStream(peer);
       mediaEvent.current.stream.execute([stream]);
+      signalingRef.current.addPeers([peer]);
     });
 
     clear();
@@ -68,6 +65,7 @@ const App: FC = () => {
       <br />
       <p>{roomLabel}</p>
       <Videos streamEvent={mediaEvent.current.stream} />
+      <TextShare signalingRef={signalingRef} />
     </div>
   );
 };
