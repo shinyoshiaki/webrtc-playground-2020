@@ -1,23 +1,14 @@
 version: "3"
 services:
-  nodejs_server:
+  app:
     build:
       context: ./
       dockerfile: ./docker/app/Dockerfile
-
-  frontend:
-    restart: unless-stopped
-    image: staticfloat/nginx-certbot
     ports:
-        - 80:80/tcp
-        - 443:443/tcp
-    environment:
-        CERTBOT_EMAIL: shinyoshiaki2012@gmail.com
-        # variable names are space-separated
-        ENVSUBST_VARS: FQDN
-        FQDN: www.androidstudio77.tk
-    volumes:
-      - ./conf.d:/etc/nginx/user.conf.d:ro
-      - letsencrypt:/etc/letsencrypt
-volumes:
-    letsencrypt:
+      - 20000:20000
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    ports:
+      - 80:80/tcp
